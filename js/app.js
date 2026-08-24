@@ -57,6 +57,11 @@ const KEYWORDS_DATA = [
     { id: 'kw6', text: 'mesin kopi espresso 500 juta', volume: 800, kd: 'Tinggi (70)', intent: 'Komersial khusus', points: 10, isRecommended: false, note: 'Volume terlalu kecil & tidak sesuai dengan katalog kopi lokal.' }
 ];
 
+const KEYWORDS_BY_ID = KEYWORDS_DATA.reduce((acc, kw) => {
+    acc[kw.id] = kw;
+    return acc;
+}, {});
+
 const BACKLINK_REQUESTS = [
     {
         id: 'bl1',
@@ -91,6 +96,11 @@ const BACKLINK_REQUESTS = [
         isGood: false
     }
 ];
+
+const BACKLINK_REQUESTS_BY_ID = BACKLINK_REQUESTS.reduce((acc, req) => {
+    acc[req.id] = req;
+    return acc;
+}, {});
 
 const SEO_TIPS = [
     "Pilih kata kunci dengan volume pencarian baik dan tingkat persaingan (KD) yang masuk akal!",
@@ -433,7 +443,7 @@ function updateSelectedKeywordsUI() {
     let totalVol = 0;
 
     gameState.selectedKeywords.forEach(id => {
-        const kwObj = KEYWORDS_DATA.find(k => k.id === id);
+        const kwObj = KEYWORDS_BY_ID[id];
         if (kwObj) {
             totalVol += kwObj.volume;
             const li = document.createElement('li');
@@ -466,7 +476,7 @@ function evaluateStage1() {
     let feedbackHTML = '<ul style="text-align: left; margin-top: 10px;">';
 
     gameState.selectedKeywords.forEach(id => {
-        const kw = KEYWORDS_DATA.find(k => k.id === id);
+        const kw = KEYWORDS_BY_ID[id];
         if (kw) {
             totalPoints += kw.points;
             const icon = kw.isRecommended ? '✅' : '⚠️';
@@ -788,7 +798,7 @@ function renderBacklinkCards() {
 }
 
 function handleBacklinkDecision(id, action) {
-    const req = BACKLINK_REQUESTS.find(r => r.id === id);
+    const req = BACKLINK_REQUESTS_BY_ID[id];
     if (!req) return;
 
     gameState.backlinkDecisions.evaluatedIds.push(id);
