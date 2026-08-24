@@ -537,11 +537,12 @@ function evaluateStage1() {
     gameState.completedStages.stage1 = true;
     updateUIHeader();
 
+    const isGoodResult = totalPoints >= 65;
     showModal(
-        'Evaluasi Riset Kata Kunci Selesai!',
-        `Anda mengumpulkan <strong>${totalPoints} XP</strong> dari Tahap 1.<br>${feedbackHTML}`,
-        'fa-solid fa-square-poll-vertical',
-        true
+        isGoodResult ? 'Evaluasi Riset Kata Kunci Selesai!' : 'Evaluasi Riset Kata Kunci: Perlu Ditingkatkan',
+        `Anda mengumpulkan <strong>${totalPoints} XP</strong> (maksimal 100 XP) dari Tahap 1.<br>${feedbackHTML}${!isGoodResult ? '<br><em>💡 Tips SEO: Prioritaskan kata kunci berniat transaksional/komersial dengan kesulitan (KD) yang masuk akal!</em>' : ''}`,
+        isGoodResult ? 'fa-solid fa-square-poll-vertical' : 'fa-solid fa-triangle-exclamation',
+        isGoodResult
     );
 }
 
@@ -671,11 +672,12 @@ function evaluateStage2() {
     gameState.completedStages.stage2 = true;
     updateUIHeader();
 
+    const isGoodResult = score >= 70;
     showModal(
-        'Audit On-Page SEO Selesai!',
-        `Skor Optimasi On-Page Anda: <strong>${score} / 100 XP</strong>.<br>Halaman Anda kini lebih ramah bagi crawler Google!`,
-        'fa-solid fa-file-code',
-        true
+        isGoodResult ? 'Audit On-Page SEO Selesai!' : 'Audit On-Page SEO: Belum Optimal',
+        `Skor Optimasi On-Page Anda: <strong>${score} / 100 XP</strong>.<br>${isGoodResult ? 'Halaman Anda kini lebih ramah bagi crawler Google!' : 'Beberapa elemen penting seperti Title Tag, Meta Description, atau Alt Gambar belum memenuhi panduan ideal.'}`,
+        isGoodResult ? 'fa-solid fa-file-code' : 'fa-solid fa-triangle-exclamation',
+        isGoodResult
     );
 }
 
@@ -796,11 +798,12 @@ function evaluateStage3() {
     gameState.completedStages.stage3 = true;
     updateUIHeader();
 
+    const isGoodResult = score >= 75;
     showModal(
-        'Audit Technical SEO Selesai!',
-        `Kesehatan situs Anda meningkat ke <strong>${score}%</strong> dengan skor <strong>${score} XP</strong>!`,
-        'fa-solid fa-gears',
-        true
+        isGoodResult ? 'Audit Technical SEO Selesai!' : 'Audit Technical SEO: Perlu Ditingkatkan',
+        `Kesehatan situs Anda: <strong>${score}%</strong> (Skor: <strong>${score} XP</strong>).<br>${isGoodResult ? 'Situs Anda kini cepat, aman (HTTPS), dan mudah diindeks Google!' : 'Masih ada masalah teknis yang belum diperbaiki. Masalah teknis ini memperlambat perayapan bot Google.'}`,
+        isGoodResult ? 'fa-solid fa-gears' : 'fa-solid fa-triangle-exclamation',
+        isGoodResult
     );
 }
 
@@ -919,11 +922,12 @@ function evaluateStage4() {
     gameState.completedStages.stage4 = true;
     updateUIHeader();
 
+    const isGoodResult = score >= 75;
     showModal(
-        'Tahap Off-Page SEO Selesai!',
-        `Skor Otoritas Backlink Anda: <strong>${score} XP</strong>! Profil backlink situs Anda semakin solid.`,
-        'fa-solid fa-link',
-        true
+        isGoodResult ? 'Tahap Off-Page SEO Selesai!' : 'Tahap Off-Page SEO: Profil Link Berisiko',
+        `Skor Otoritas Backlink Anda: <strong>${score} XP</strong>.<br>${isGoodResult ? 'Profil backlink situs Anda semakin solid dan bereputasi tinggi!' : 'Menerima link spam atau menolak link berkualitas dapat merugikan otoritas domain situs Anda.'}`,
+        isGoodResult ? 'fa-solid fa-link' : 'fa-solid fa-triangle-exclamation',
+        isGoodResult
     );
 }
 
@@ -1031,11 +1035,32 @@ function runSERPSimulation() {
         const actionsCard = document.getElementById('stage5-actions');
         if (actionsCard) actionsCard.classList.remove('hidden');
 
+        const isExcellent = userRankPosition <= 3;
+        const isModerate = userRankPosition <= 5;
+
+        let modalTitle = '';
+        let modalIcon = '';
+        let statusMessage = '';
+
+        if (isExcellent) {
+            modalTitle = `🏆 Performa SEO Luar Biasa! (Peringkat #${userRankPosition})`;
+            modalIcon = 'fa-solid fa-trophy';
+            statusMessage = `Selamat! Strategi SEO Anda sangat sukses meraih <strong>Peringkat #${userRankPosition}</strong> di Google!<br>Estimasi Trafik Bulanan: <strong>${gameState.traffic.toLocaleString('id-ID')} pengunjung</strong>.<br>Situs Anda berhasil mengungguli kompetitor utama!`;
+        } else if (isModerate) {
+            modalTitle = `📊 Evaluasi SERP: Peringkat #${userRankPosition}`;
+            modalIcon = 'fa-solid fa-chart-line';
+            statusMessage = `Hasil yang cukup baik! Situs Anda meraih <strong>Peringkat #${userRankPosition}</strong> di Google.<br>Estimasi Trafik Bulanan: <strong>${gameState.traffic.toLocaleString('id-ID')} pengunjung</strong>.<br>Tingkatkan lagi skor On-Page atau Technical SEO Anda untuk menembus 3 besar!`;
+        } else {
+            modalTitle = `⚠️ Evaluasi SERP: Peringkat #${userRankPosition} (Perlu Ditingkatkan)`;
+            modalIcon = 'fa-solid fa-triangle-exclamation';
+            statusMessage = `Peringkat situs Anda masih di <strong>Peringkat #${userRankPosition}</strong> dengan trafik <strong>${gameState.traffic.toLocaleString('id-ID')} /bulan</strong>.<br>Beberapa optimasi kurang maksimal (kata kunci kurang tepat, masalah teknis belum diperbaiki, atau menerima link spam).<br>Silakan pelajari lagi dan perbaiki pilihan optimasi Anda!`;
+        }
+
         showModal(
-            '🎉 Selamat! Game SEO Selesai!',
-            `Situs Anda berhasil meraih <strong>Peringkat #${userRankPosition}</strong> di Google untuk kata kunci utama!<br>Estimasi Trafik Bulanan: <strong>${gameState.traffic.toLocaleString('id-ID')} pengunjung</strong>.<br><br>Pilih aksi selanjutnya:`,
-            'fa-solid fa-trophy',
-            true,
+            modalTitle,
+            `${statusMessage}<br><br>Pilih aksi selanjutnya:`,
+            modalIcon,
+            isExcellent,
             [
                 {
                     text: '<i class="fa-solid fa-house"></i> Kembali ke Hub (Tahap 1)',
