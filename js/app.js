@@ -885,65 +885,15 @@ function updateOffPageStatsUI() {
 }
 
 function evaluateStage4() {
-    let score = 0;
-
-    BACKLINK_REQUESTS.forEach(req => {
-        const isEvaluated = gameState.backlinkDecisions.evaluatedIds.includes(req.id);
-        if (isEvaluated) {
-            if (req.isGood && gameState.backlinkDecisions.goodAccepted > 0) {
-                // Accepted good link
-                score += 25;
-            } else if (!req.isGood) {
-                // Evaluated spam link
-                if (gameState.backlinkDecisions.spamAccepted > 0) {
-                    // Handled spam link decision - penalty if accepted
-                    score -= 10;
-                } else {
-                    // Rejected spam link
-                    score += 25;
-                }
-            }
-        }
-    });
-
-    // Precise score calculation based on decisions
-    let finalScore = 0;
-    BACKLINK_REQUESTS.forEach(req => {
-        const isEvaluated = gameState.backlinkDecisions.evaluatedIds.includes(req.id);
-        if (isEvaluated) {
-            if (req.isGood) {
-                // Was accepted?
-                const isAccepted = gameState.backlinkDecisions.goodAccepted > 0 && req.id === 'bl1' ? (gameState.backlinkDecisions.evaluatedIds.includes('bl1')) : false;
-                // Check per ID
-            }
-        }
-    });
-
-    // Correct formula:
-    // For good links: +25 if accepted, 0 if rejected
-    // For spam links: +25 if rejected, -10 if accepted
-    let calculatedScore = 0;
-    BACKLINK_REQUESTS.forEach(req => {
-        const isEvaluated = gameState.backlinkDecisions.evaluatedIds.includes(req.id);
-        if (isEvaluated) {
-            if (req.isGood) {
-                // Check if this specific good link was accepted
-                // goodAccepted tracks total count, but we can verify decision:
-                // Since user must evaluate all items to submit:
-                // if it's good and rejected, 0; if accepted, +25.
-            }
-        }
-    });
-
-    // Using exact counts:
-    // goodAccepted (max 2): 25 points each = up to 50
-    // spamRejected = (total spam count - spamAccepted): 25 points each = up to 50
-    // spamAccepted: -10 points penalty each
+    // Scoring logic:
+    // goodAccepted (max 2): +25 XP each
+    // spamRejected (total spam - spamAccepted): +25 XP each
+    // spamAccepted: -10 XP penalty each
     const spamCountTotal = BACKLINK_REQUESTS.filter(r => !r.isGood).length;
     const spamRejected = spamCountTotal - gameState.backlinkDecisions.spamAccepted;
 
-    calculatedScore = (gameState.backlinkDecisions.goodAccepted * 25) + (spamRejected * 25) - (gameState.backlinkDecisions.spamAccepted * 10);
-    score = Math.max(0, calculatedScore);
+    const calculatedScore = (gameState.backlinkDecisions.goodAccepted * 25) + (spamRejected * 25) - (gameState.backlinkDecisions.spamAccepted * 10);
+    const score = Math.max(0, calculatedScore);
 
     gameState.stageScores.stage4 = score;
     gameState.completedStages.stage4 = true;
