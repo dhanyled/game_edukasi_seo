@@ -579,10 +579,15 @@ function updateOnPagePreviewAndChecklist() {
     checks.forEach(c => {
         const li = document.createElement('li');
         li.className = c.pass ? 'pass' : 'fail';
-        li.innerHTML = `
-            <i class="fa-solid ${c.pass ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
-            <span>${c.label}</span>
-        `;
+
+        const icon = document.createElement('i');
+        icon.className = `fa-solid ${c.pass ? 'fa-circle-check' : 'fa-circle-xmark'}`;
+
+        const span = document.createElement('span');
+        span.textContent = c.label;
+
+        li.appendChild(icon);
+        li.appendChild(span);
         checklist.appendChild(li);
     });
 }
