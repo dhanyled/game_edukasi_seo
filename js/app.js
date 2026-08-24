@@ -463,18 +463,18 @@ function evaluateStage1() {
     if (gameState.selectedKeywords.length !== 3) return;
 
     let totalPoints = 0;
-    let feedbackHTML = '<ul style="text-align: left; margin-top: 10px;">';
+    const itemsHTML = [];
 
     gameState.selectedKeywords.forEach(id => {
         const kw = KEYWORDS_DATA.find(k => k.id === id);
         if (kw) {
             totalPoints += kw.points;
             const icon = kw.isRecommended ? '✅' : '⚠️';
-            feedbackHTML += `<li style="margin-bottom: 6px;">${icon} <strong>${kw.text}</strong>: ${kw.note} (+${kw.points} XP)</li>`;
+            itemsHTML.push(`<li style="margin-bottom: 6px;">${icon} <strong>${kw.text}</strong>: ${kw.note} (+${kw.points} XP)</li>`);
         }
     });
 
-    feedbackHTML += '</ul>';
+    const feedbackHTML = `<ul style="text-align: left; margin-top: 10px;">${itemsHTML.join('')}</ul>`;
 
     gameState.stageScores.stage1 = totalPoints;
     gameState.completedStages.stage1 = true;
