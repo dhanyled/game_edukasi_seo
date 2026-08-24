@@ -206,6 +206,74 @@ class SoundEffects {
 
 const sounds = new SoundEffects();
 
+// Voice Humanizer & Text-to-Speech Engine
+function humanizeTextForVoice(text) {
+    if (!text || typeof text !== 'string') return '';
+
+    // Strip HTML tags for clean voice reading
+    let cleanText = text.replace(/<[^>]*>/g, ' ');
+
+    // English-to-Indonesian Phonetic Humanizer Map
+    const voicePhoneticMap = [
+        { pattern: /\bSEO\b/gi, replacement: 'Es E O' },
+        { pattern: /\bGoogle\b/gi, replacement: 'Gugel' },
+        { pattern: /\bKeyword Research\b/gi, replacement: 'Riset Kata Kunci' },
+        { pattern: /\bOn-Page\b/gi, replacement: 'On Pej' },
+        { pattern: /\bOff-Page\b/gi, replacement: 'Of Pej' },
+        { pattern: /\bBacklink\b/gi, replacement: 'Bekling' },
+        { pattern: /\bDomain Authority\b/gi, replacement: 'Otoritas Domain' },
+        { pattern: /\bXP\b/gi, replacement: 'Eks Pi' },
+        { pattern: /\bSSL\b/gi, replacement: 'Es Es El' },
+        { pattern: /\bSERP\b/gi, replacement: 'Serp' },
+        { pattern: /\bSlug\b/gi, replacement: 'Slag' },
+        { pattern: /\bPrivate Blog Network\b/gi, replacement: 'Jaringan Blog Pribadi' },
+        { pattern: /\bPBN\b/gi, replacement: 'Pe Be En' },
+        { pattern: /\bHTTPS\b/gi, replacement: 'Ha Te Te Pe Es' },
+        { pattern: /\bHTTP\b/gi, replacement: 'Ha Te Te Pe' },
+        { pattern: /\bXML\b/gi, replacement: 'Eks Em El' },
+        { pattern: /\bHTML\b/gi, replacement: 'Ha Te Em El' },
+        { pattern: /\bAlt Text\b/gi, replacement: 'Teks Alternatif Gambar' },
+        { pattern: /\bTitle Tag\b/gi, replacement: 'Tag Judul' },
+        { pattern: /\bMeta Description\b/gi, replacement: 'Deskripsi Meta' },
+        { pattern: /\bHeading\b/gi, replacement: 'Heding' },
+        { pattern: /\bCrawler\b/gi, replacement: 'Kroler' },
+        { pattern: /\bRedirect\b/gi, replacement: 'Pengalihan' },
+        { pattern: /\bBroken Link\b/gi, replacement: 'Tautan Rusak' },
+        { pattern: /\bdofollow\b/gi, replacement: 'do folo' },
+        { pattern: /\b /g, replacement: ' ' }
+    ];
+
+    voicePhoneticMap.forEach(item => {
+        cleanText = cleanText.replace(item.pattern, item.replacement);
+    });
+
+    return cleanText.trim();
+}
+
+function speakText(text) {
+    if (!('speechSynthesis' in window)) {
+        alert('Fitur Text-to-Speech tidak didukung di browser ini.');
+        return;
+    }
+
+    window.speechSynthesis.cancel(); // Stop any active speech
+
+    const humanized = humanizeTextForVoice(text);
+    const utterance = new SpeechSynthesisUtterance(humanized);
+    utterance.lang = 'id-ID';
+    utterance.rate = 0.95; // Slightly relaxed pace for human-like reading
+    utterance.pitch = 1.0;
+
+    // Pick Indonesian voice if available
+    const voices = window.speechSynthesis.getVoices();
+    const idVoice = voices.find(v => v.lang.startsWith('id') || v.lang.includes('ID'));
+    if (idVoice) {
+        utterance.voice = idVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
+}
+
 // Security Helper
 function escapeHTML(str) {
     if (typeof str !== 'string') return str;
@@ -262,6 +330,19 @@ function initNavigation() {
 
     document.getElementById('btn-reset-game')?.addEventListener('click', resetGameState);
     document.getElementById('btn-modal-close')?.addEventListener('click', closeModal);
+
+    // Voice Narration Listener for Tips
+    document.getElementById('btn-speak-tip')?.addEventListener('click', () => {
+        const tipText = document.getElementById('dynamic-tip')?.innerText || '';
+        if (tipText) speakText(tipText);
+    });
+
+    // Voice Narration Listener for Modals
+    document.getElementById('btn-modal-speak')?.addEventListener('click', () => {
+        const title = document.getElementById('modal-title')?.innerText || '';
+        const body = document.getElementById('modal-body')?.innerText || '';
+        speakText(`${title}. ${body}`);
+    });
 
     // Modal Keyboard Escape Key Listener
     document.addEventListener('keydown', (e) => {
@@ -385,6 +466,16 @@ function showModal(title, text, iconClass = 'fa-solid fa-award', isSuccess = tru
     if (modalFooter) {
         if (customButtons && Array.isArray(customButtons)) {
             modalFooter.innerHTML = '';
+            const speakBtn = document.createElement('button');
+            speakBtn.className = 'btn btn-outline-info';
+            speakBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i> Baca Suara';
+            speakBtn.addEventListener('click', () => {
+                const titleVal = document.getElementById('modal-title')?.innerText || '';
+                const bodyVal = document.getElementById('modal-body')?.innerText || '';
+                speakText(`${titleVal}. ${bodyVal}`);
+            });
+            modalFooter.appendChild(speakBtn);
+
             customButtons.forEach(btnConfig => {
                 const btn = document.createElement('button');
                 btn.className = btnConfig.className || 'btn btn-primary';
@@ -396,8 +487,18 @@ function showModal(title, text, iconClass = 'fa-solid fa-award', isSuccess = tru
                 modalFooter.appendChild(btn);
             });
         } else {
-            modalFooter.innerHTML = '<button id="btn-modal-close" class="btn btn-primary">Lanjutkan</button>';
+            modalFooter.innerHTML = `
+                <button id="btn-modal-speak" class="btn btn-outline-info" title="Dengarkan Narator">
+                    <i class="fa-solid fa-volume-high"></i> Baca Suara
+                </button>
+                <button id="btn-modal-close" class="btn btn-primary">Lanjutkan</button>
+            `;
             document.getElementById('btn-modal-close')?.addEventListener('click', closeModal);
+            document.getElementById('btn-modal-speak')?.addEventListener('click', () => {
+                const titleVal = document.getElementById('modal-title')?.innerText || '';
+                const bodyVal = document.getElementById('modal-body')?.innerText || '';
+                speakText(`${titleVal}. ${bodyVal}`);
+            });
         }
     }
 

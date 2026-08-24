@@ -273,13 +273,35 @@ body {
     padding: 14px;
 }
 
+.quick-tips-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
 .quick-tips-card h4 {
     font-size: 0.85rem;
     color: var(--warning-color);
-    margin-bottom: 6px;
+    margin-bottom: 0;
     display: flex;
     align-items: center;
     gap: 6px;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--primary-light);
 }
 
 .quick-tips-card p {
