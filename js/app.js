@@ -302,9 +302,17 @@ function updateUIHeader() {
 
     // Calculate completed count
     let completedCount = 0;
+    const statusIcons = [
+        document.getElementById('status-stage-1'),
+        document.getElementById('status-stage-2'),
+        document.getElementById('status-stage-3'),
+        document.getElementById('status-stage-4'),
+        document.getElementById('status-stage-5')
+    ];
+
     for (let i = 1; i <= 5; i++) {
         const isDone = gameState.completedStages[`stage${i}`];
-        const statusIcon = document.getElementById(`status-stage-${i}`);
+        const statusIcon = statusIcons[i - 1];
         if (statusIcon) {
             if (isDone) {
                 statusIcon.classList.add('completed');
