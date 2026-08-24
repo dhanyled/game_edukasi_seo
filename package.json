@@ -1,0 +1,12 @@
+{
+  "name": "game_edukasi_seo",
+  "version": "1.0.0",
+  "description": "Game Edukasi SEO Master",
+  "main": "js/app.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test"
+  },
+  "author": "",
+  "license": "ISC"
+}
