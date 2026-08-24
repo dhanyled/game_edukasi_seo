@@ -1167,6 +1167,12 @@ function runSERPSimulation() {
         }
 
         showModal(
+<<<<<<< HEAD
+            'Simulasi SERP Selesai!',
+            `Selamat! Situs Anda berhasil meraih **Peringkat #${userRankPosition}** di Google untuk kata kunci utama!<br>Estimasi Trafik Bulanan: <strong>${gameState.traffic.toLocaleString('id-ID')} pengunjung</strong>.`,
+            'fa-solid fa-trophy',
+            true
+=======
             modalTitle,
             `${statusMessage}<br><br>Pilih aksi selanjutnya:`,
             modalIcon,
@@ -1183,6 +1189,7 @@ function runSERPSimulation() {
                     onClick: () => resetGameState()
                 }
             ]
+>>>>>>> a91ead3 (Optimize SEO Game performance, security, UI responsiveness, and Indonesian voice narration)
         );
 
     }, 1200);
