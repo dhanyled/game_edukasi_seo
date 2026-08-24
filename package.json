@@ -1,0 +1,16 @@
+{
+  "name": "game_edukasi_seo",
+  "version": "1.0.0",
+  "description": "Aplikasi Web Simulasi Game Edukasi SEO",
+  "main": "js/app.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "seo",
+    "education",
+    "game"
+  ],
+  "author": "",
+  "license": "MIT"
+}

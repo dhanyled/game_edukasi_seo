@@ -979,13 +979,55 @@ function runSERPSimulation() {
 }
 
 // App Initialization Entrypoint
-document.addEventListener('DOMContentLoaded', () => {
-    loadGameState();
-    initNavigation();
-    initStage1();
-    initStage2();
-    initStage3();
-    initStage4();
-    initStage5();
-    updateUIHeader();
-});
+if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+    document.addEventListener('DOMContentLoaded', () => {
+        loadGameState();
+        initNavigation();
+        initStage1();
+        initStage2();
+        initStage3();
+        initStage4();
+        initStage5();
+        updateUIHeader();
+    });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        gameState,
+        KEYWORDS_DATA,
+        BACKLINK_REQUESTS,
+        SEO_TIPS,
+        SoundEffects,
+        sounds,
+        saveGameState,
+        loadGameState,
+        resetGameState,
+        initNavigation,
+        switchStage,
+        updateUIHeader,
+        showModal,
+        closeModal,
+        initStage1,
+        renderKeywordTable,
+        toggleSelectKeyword,
+        updateSelectedKeywordsUI,
+        evaluateStage1,
+        initStage2,
+        updateOnPagePreviewAndChecklist,
+        evaluateStage2,
+        initStage3,
+        renderTechIssues,
+        fixTechIssue,
+        updateTechHealthUI,
+        evaluateStage3,
+        initStage4,
+        renderBacklinkCards,
+        handleBacklinkDecision,
+        updateOffPageStatsUI,
+        evaluateStage4,
+        initStage5,
+        updateSERPBreakdown,
+        runSERPSimulation
+    };
+}
