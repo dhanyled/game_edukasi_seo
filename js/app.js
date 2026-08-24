@@ -979,13 +979,24 @@ function runSERPSimulation() {
 }
 
 // App Initialization Entrypoint
-document.addEventListener('DOMContentLoaded', () => {
-    loadGameState();
-    initNavigation();
-    initStage1();
-    initStage2();
-    initStage3();
-    initStage4();
-    initStage5();
-    updateUIHeader();
-});
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
+        loadGameState();
+        initNavigation();
+        initStage1();
+        initStage2();
+        initStage3();
+        initStage4();
+        initStage5();
+        updateUIHeader();
+    });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        gameState,
+        saveGameState,
+        loadGameState,
+        resetGameState
+    };
+}
