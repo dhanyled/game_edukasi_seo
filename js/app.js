@@ -328,6 +328,13 @@ function updateUIHeader() {
 }
 
 // Modal Dialog Utility
+const modalElements = {
+    get overlay() { return document.getElementById('modal-overlay'); },
+    get title() { return document.getElementById('modal-title'); },
+    get body() { return document.getElementById('modal-body'); },
+    get icon() { return document.getElementById('modal-icon'); }
+};
+
 function showModal(title, text, iconClass = 'fa-solid fa-award', isSuccess = true) {
     if (isSuccess) {
         sounds.playSuccess();
@@ -335,22 +342,16 @@ function showModal(title, text, iconClass = 'fa-solid fa-award', isSuccess = tru
         sounds.playError();
     }
 
-    const modal = document.getElementById('modal-overlay');
-    const modalTitle = document.getElementById('modal-title');
-    const modalBody = document.getElementById('modal-body');
-    const modalIcon = document.getElementById('modal-icon');
+    if (modalElements.title) modalElements.title.innerText = title;
+    if (modalElements.body) modalElements.body.innerHTML = text;
+    if (modalElements.icon) modalElements.icon.className = `${iconClass} modal-icon`;
 
-    if (modalTitle) modalTitle.innerText = title;
-    if (modalBody) modalBody.innerHTML = text;
-    if (modalIcon) modalIcon.className = `${iconClass} modal-icon`;
-
-    if (modal) modal.classList.remove('hidden');
+    if (modalElements.overlay) modalElements.overlay.classList.remove('hidden');
 }
 
 function closeModal() {
     sounds.playClick();
-    const modal = document.getElementById('modal-overlay');
-    if (modal) modal.classList.add('hidden');
+    if (modalElements.overlay) modalElements.overlay.classList.add('hidden');
 }
 
 /* ==========================================================================
