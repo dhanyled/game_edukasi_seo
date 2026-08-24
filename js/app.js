@@ -341,7 +341,7 @@ function showModal(title, text, iconClass = 'fa-solid fa-award', isSuccess = tru
     const modalIcon = document.getElementById('modal-icon');
 
     if (modalTitle) modalTitle.innerText = title;
-    if (modalBody) modalBody.innerHTML = text;
+    if (modalBody) modalBody.textContent = text;
     if (modalIcon) modalIcon.className = `${iconClass} modal-icon`;
 
     if (modal) modal.classList.remove('hidden');
