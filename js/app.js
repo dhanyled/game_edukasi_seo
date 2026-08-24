@@ -523,7 +523,7 @@ function initStage2() {
     updateOnPagePreviewAndChecklist();
 }
 
-function updateOnPagePreviewAndChecklist() {
+function getOnPageInputData() {
     const title = document.getElementById('input-title')?.value || '';
     const meta = document.getElementById('input-meta')?.value || '';
     const slug = document.getElementById('input-slug')?.value || '';
@@ -533,13 +533,17 @@ function updateOnPagePreviewAndChecklist() {
     // Save current values to state
     gameState.onpageData = { title, meta, slug, h1, alt };
 
-    // Update char counts
+    return { title, meta, slug, h1, alt };
+}
+
+function updateOnPageCharCounts(title, meta) {
     const titleCount = document.getElementById('title-count');
     const metaCount = document.getElementById('meta-count');
     if (titleCount) titleCount.innerText = `${title.length}/60 karakter`;
     if (metaCount) metaCount.innerText = `${meta.length}/160 karakter`;
+}
 
-    // Update Live SERP Preview
+function updateOnPageSerpPreview(title, meta, slug) {
     const prevTitle = document.getElementById('preview-title');
     const prevDesc = document.getElementById('preview-desc');
     const prevUrl = document.getElementById('preview-url');
@@ -547,8 +551,9 @@ function updateOnPagePreviewAndChecklist() {
     if (prevTitle) prevTitle.innerText = title.trim() || 'Judul Halaman Belum Diisi';
     if (prevDesc) prevDesc.innerText = meta.trim() || 'Deskripsi meta halaman belum diisi...';
     if (prevUrl) prevUrl.innerText = `https://kopilokal.id/${slug.trim().toLowerCase().replace(/\s+/g, '-') || 'halaman'}`;
+}
 
-    // On-Page Checklist validation
+function updateOnPageChecklist({ title, meta, slug, h1, alt }) {
     const checklist = document.getElementById('onpage-checklist');
     if (!checklist) return;
 
@@ -585,6 +590,13 @@ function updateOnPagePreviewAndChecklist() {
         `;
         checklist.appendChild(li);
     });
+}
+
+function updateOnPagePreviewAndChecklist() {
+    const data = getOnPageInputData();
+    updateOnPageCharCounts(data.title, data.meta);
+    updateOnPageSerpPreview(data.title, data.meta, data.slug);
+    updateOnPageChecklist(data);
 }
 
 function evaluateStage2() {
