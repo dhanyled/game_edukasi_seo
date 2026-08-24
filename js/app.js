@@ -303,10 +303,17 @@ function loadGameState() {
         const saved = localStorage.getItem('seo_game_state_v1');
         if (saved) {
             const parsed = JSON.parse(saved);
-            Object.assign(gameState, parsed);
+            if (parsed && typeof parsed === 'object') {
+                Object.assign(gameState, parsed);
+            }
         }
     } catch (e) {
-        console.warn('Failed to parse saved game state.', e);
+        console.warn('Failed to parse saved game state, resetting corrupted state.', e);
+        try {
+            localStorage.removeItem('seo_game_state_v1');
+        } catch (err) {
+            console.error('Failed to clear corrupted storage state', err);
+        }
     }
 }
 
@@ -529,9 +536,10 @@ function renderKeywordTable() {
     if (!tbody) return;
 
     tbody.innerHTML = '';
+    const selectedSet = new Set(gameState.selectedKeywords);
 
     KEYWORDS_DATA.forEach(kw => {
-        const isSelected = gameState.selectedKeywords.includes(kw.id);
+        const isSelected = selectedSet.has(kw.id);
         const tr = document.createElement('tr');
 
         tr.innerHTML = `
@@ -926,9 +934,10 @@ function renderBacklinkCards() {
     if (!container) return;
 
     container.innerHTML = '';
+    const evaluatedSet = new Set(gameState.backlinkDecisions.evaluatedIds);
 
     BACKLINK_REQUESTS.forEach(req => {
-        const isEvaluated = gameState.backlinkDecisions.evaluatedIds.includes(req.id);
+        const isEvaluated = evaluatedSet.has(req.id);
         const card = document.createElement('div');
         card.className = 'backlink-card';
 
