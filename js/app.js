@@ -57,6 +57,8 @@ const KEYWORDS_DATA = [
     { id: 'kw6', text: 'mesin kopi espresso 500 juta', volume: 800, kd: 'Tinggi (70)', intent: 'Komersial khusus', points: 10, isRecommended: false, note: 'Volume terlalu kecil & tidak sesuai dengan katalog kopi lokal.' }
 ];
 
+const KEYWORDS_MAP = Object.fromEntries(KEYWORDS_DATA.map(k => [k.id, k]));
+
 const BACKLINK_REQUESTS = [
     {
         id: 'bl1',
@@ -433,7 +435,7 @@ function updateSelectedKeywordsUI() {
     let totalVol = 0;
 
     gameState.selectedKeywords.forEach(id => {
-        const kwObj = KEYWORDS_DATA.find(k => k.id === id);
+        const kwObj = KEYWORDS_MAP[id];
         if (kwObj) {
             totalVol += kwObj.volume;
             const li = document.createElement('li');
@@ -466,7 +468,7 @@ function evaluateStage1() {
     let feedbackHTML = '<ul style="text-align: left; margin-top: 10px;">';
 
     gameState.selectedKeywords.forEach(id => {
-        const kw = KEYWORDS_DATA.find(k => k.id === id);
+        const kw = KEYWORDS_MAP[id];
         if (kw) {
             totalPoints += kw.points;
             const icon = kw.isRecommended ? '✅' : '⚠️';
