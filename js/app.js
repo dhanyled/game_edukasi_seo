@@ -268,17 +268,14 @@ function switchStage(stageNum) {
     updateUIHeader();
 }
 
-function updateUIHeader() {
-    // Calculate total score
+function calculateScoreAndRank() {
     gameState.totalScore = gameState.stageScores.stage1 +
                            gameState.stageScores.stage2 +
                            gameState.stageScores.stage3 +
                            gameState.stageScores.stage4;
 
-    // Traffic estimation logic
     gameState.traffic = Math.round(gameState.totalScore * 85);
 
-    // Rank title
     if (gameState.totalScore >= 350) {
         gameState.rank = "Master SEO (Level 5)";
     } else if (gameState.totalScore >= 250) {
@@ -290,8 +287,9 @@ function updateUIHeader() {
     } else {
         gameState.rank = "Pemula (Level 1)";
     }
+}
 
-    // Update DOM
+function updateHeaderDOM() {
     const userRank = document.getElementById('user-rank');
     const userScore = document.getElementById('user-score');
     const userTraffic = document.getElementById('user-traffic');
@@ -299,8 +297,9 @@ function updateUIHeader() {
     if (userRank) userRank.innerText = gameState.rank;
     if (userScore) userScore.innerText = `${gameState.totalScore} XP`;
     if (userTraffic) userTraffic.innerText = `${gameState.traffic.toLocaleString('id-ID')} /bln`;
+}
 
-    // Calculate completed count
+function updateStageProgressDOM() {
     let completedCount = 0;
     const statusIcons = [
         document.getElementById('status-stage-1'),
@@ -331,7 +330,12 @@ function updateUIHeader() {
     if (completedText) completedText.innerText = `${completedCount} dari 5 Tahap Selesai`;
     if (progressBar) progressBar.style.width = `${percent}%`;
     if (progressPercent) progressPercent.innerText = `${percent}%`;
+}
 
+function updateUIHeader() {
+    calculateScoreAndRank();
+    updateHeaderDOM();
+    updateStageProgressDOM();
     saveGameState();
 }
 
