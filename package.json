@@ -1,0 +1,16 @@
+{
+  "name": "game_edukasi_seo",
+  "version": "1.0.0",
+  "description": "Aplikasi web simulasi game edukasi berbasis Bahasa Indonesia untuk SEO",
+  "main": "js/app.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "seo",
+    "game",
+    "edukasi"
+  ],
+  "author": "",
+  "license": "ISC"
+}
