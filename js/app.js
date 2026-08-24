@@ -371,6 +371,7 @@ function renderKeywordTable() {
     if (!tbody) return;
 
     tbody.innerHTML = '';
+    const fragment = document.createDocumentFragment();
 
     KEYWORDS_DATA.forEach(kw => {
         const isSelected = gameState.selectedKeywords.includes(kw.id);
@@ -391,8 +392,10 @@ function renderKeywordTable() {
         const btn = tr.querySelector('button');
         btn.addEventListener('click', () => toggleSelectKeyword(kw.id));
 
-        tbody.appendChild(tr);
+        fragment.appendChild(tr);
     });
+
+    tbody.appendChild(fragment);
 }
 
 function toggleSelectKeyword(id) {
@@ -431,6 +434,7 @@ function updateSelectedKeywordsUI() {
 
     list.innerHTML = '';
     let totalVol = 0;
+    const fragment = document.createDocumentFragment();
 
     gameState.selectedKeywords.forEach(id => {
         const kwObj = KEYWORDS_DATA.find(k => k.id === id);
@@ -443,9 +447,10 @@ function updateSelectedKeywordsUI() {
                 <span class="remove-btn" title="Hapus">&times;</span>
             `;
             li.querySelector('.remove-btn').addEventListener('click', () => toggleSelectKeyword(id));
-            list.appendChild(li);
+            fragment.appendChild(li);
         }
     });
+    list.appendChild(fragment);
 
     if (analysisBox) {
         analysisBox.innerHTML = `
@@ -576,6 +581,7 @@ function updateOnPagePreviewAndChecklist() {
     ];
 
     checklist.innerHTML = '';
+    const fragment = document.createDocumentFragment();
     checks.forEach(c => {
         const li = document.createElement('li');
         li.className = c.pass ? 'pass' : 'fail';
@@ -583,8 +589,9 @@ function updateOnPagePreviewAndChecklist() {
             <i class="fa-solid ${c.pass ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
             <span>${c.label}</span>
         `;
-        checklist.appendChild(li);
+        fragment.appendChild(li);
     });
+    checklist.appendChild(fragment);
 }
 
 function evaluateStage2() {
@@ -664,6 +671,7 @@ function renderTechIssues() {
     if (!container) return;
 
     container.innerHTML = '';
+    const fragment = document.createDocumentFragment();
 
     TECH_ISSUES.forEach(issue => {
         const isFixed = gameState.techIssuesFixed[issue.id];
@@ -685,8 +693,10 @@ function renderTechIssues() {
             btn.addEventListener('click', () => fixTechIssue(issue.id));
         }
 
-        container.appendChild(card);
+        fragment.appendChild(card);
     });
+
+    container.appendChild(fragment);
 }
 
 function fixTechIssue(id) {
@@ -758,6 +768,7 @@ function renderBacklinkCards() {
     if (!container) return;
 
     container.innerHTML = '';
+    const fragment = document.createDocumentFragment();
 
     BACKLINK_REQUESTS.forEach(req => {
         const isEvaluated = gameState.backlinkDecisions.evaluatedIds.includes(req.id);
@@ -783,8 +794,10 @@ function renderBacklinkCards() {
             card.querySelector('.btn-reject').addEventListener('click', () => handleBacklinkDecision(req.id, 'reject'));
         }
 
-        container.appendChild(card);
+        fragment.appendChild(card);
     });
+
+    container.appendChild(fragment);
 }
 
 function handleBacklinkDecision(id, action) {
@@ -953,6 +966,7 @@ function runSERPSimulation() {
         }
 
         container.innerHTML = '';
+        const fragment = document.createDocumentFragment();
         finalResults.forEach((res, index) => {
             const rankNum = res.isUser ? userRankPosition : (index >= userRankPosition ? index + 1 : index + 1);
             const div = document.createElement('div');
@@ -965,8 +979,9 @@ function runSERPSimulation() {
                 <div class="serp-result-desc">${res.desc}</div>
             `;
 
-            container.appendChild(div);
+            fragment.appendChild(div);
         });
+        container.appendChild(fragment);
 
         showModal(
             'Simulasi SERP Selesai!',
