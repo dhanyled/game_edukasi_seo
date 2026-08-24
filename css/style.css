@@ -882,6 +882,28 @@ body {
     color: #4d5156;
 }
 
+.stage5-actions-card {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e8eaed;
+}
+
+.stage5-actions-card.hidden {
+    display: none;
+}
+
+.stage5-actions-card h4 {
+    font-size: 0.95rem;
+    color: #3c4043;
+    margin-bottom: 12px;
+}
+
+.stage5-actions-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 /* Modal Popup */
 .modal-overlay {
     position: fixed;
@@ -943,6 +965,8 @@ body {
 .modal-footer {
     display: flex;
     justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 /* Footer */

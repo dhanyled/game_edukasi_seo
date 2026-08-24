@@ -365,7 +365,7 @@ function updateUIHeader() {
 }
 
 // Modal Dialog Utility
-function showModal(title, text, iconClass = 'fa-solid fa-award', isSuccess = true) {
+function showModal(title, text, iconClass = 'fa-solid fa-award', isSuccess = true, customButtons = null) {
     if (isSuccess) {
         sounds.playSuccess();
     } else {
@@ -376,10 +376,30 @@ function showModal(title, text, iconClass = 'fa-solid fa-award', isSuccess = tru
     const modalTitle = document.getElementById('modal-title');
     const modalBody = document.getElementById('modal-body');
     const modalIcon = document.getElementById('modal-icon');
+    const modalFooter = document.querySelector('.modal-footer');
 
     if (modalTitle) modalTitle.innerText = title;
     if (modalBody) modalBody.innerHTML = text;
     if (modalIcon) modalIcon.className = `${iconClass} modal-icon`;
+
+    if (modalFooter) {
+        if (customButtons && Array.isArray(customButtons)) {
+            modalFooter.innerHTML = '';
+            customButtons.forEach(btnConfig => {
+                const btn = document.createElement('button');
+                btn.className = btnConfig.className || 'btn btn-primary';
+                btn.innerHTML = btnConfig.text;
+                btn.addEventListener('click', () => {
+                    closeModal();
+                    if (btnConfig.onClick) btnConfig.onClick();
+                });
+                modalFooter.appendChild(btn);
+            });
+        } else {
+            modalFooter.innerHTML = '<button id="btn-modal-close" class="btn btn-primary">Lanjutkan</button>';
+            document.getElementById('btn-modal-close')?.addEventListener('click', closeModal);
+        }
+    }
 
     if (modal) modal.classList.remove('hidden');
 }
@@ -915,6 +935,8 @@ function initStage5() {
     if (btnSim) {
         btnSim.addEventListener('click', runSERPSimulation);
     }
+    document.getElementById('btn-back-to-hub')?.addEventListener('click', () => switchStage(1));
+    document.getElementById('btn-replay-game')?.addEventListener('click', resetGameState);
     updateSERPBreakdown();
 }
 
@@ -1006,11 +1028,26 @@ function runSERPSimulation() {
             container.appendChild(div);
         });
 
+        const actionsCard = document.getElementById('stage5-actions');
+        if (actionsCard) actionsCard.classList.remove('hidden');
+
         showModal(
-            'Simulasi SERP Selesai!',
-            `Selamat! Situs Anda berhasil meraih <strong>Peringkat #${userRankPosition}</strong> di Google untuk kata kunci utama!<br>Estimasi Trafik Bulanan: <strong>${gameState.traffic.toLocaleString('id-ID')} pengunjung</strong>.`,
+            '🎉 Selamat! Game SEO Selesai!',
+            `Situs Anda berhasil meraih <strong>Peringkat #${userRankPosition}</strong> di Google untuk kata kunci utama!<br>Estimasi Trafik Bulanan: <strong>${gameState.traffic.toLocaleString('id-ID')} pengunjung</strong>.<br><br>Pilih aksi selanjutnya:`,
             'fa-solid fa-trophy',
-            true
+            true,
+            [
+                {
+                    text: '<i class="fa-solid fa-house"></i> Kembali ke Hub (Tahap 1)',
+                    className: 'btn btn-primary',
+                    onClick: () => switchStage(1)
+                },
+                {
+                    text: '<i class="fa-solid fa-rotate-right"></i> Main Lagi (Reset)',
+                    className: 'btn btn-outline-danger',
+                    onClick: () => resetGameState()
+                }
+            ]
         );
 
     }, 1200);
