@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Edukasi SEO - Pelajari SEO Lewat Simulasi Interaktif</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="header-brand">
+                <i class="fa-solid fa-rocket brand-icon"></i>
+                <div class="brand-text">
+                    <h1>SEO Master: Game Edukasi SEO</h1>
+                    <p>Simulasi Interaktif Belajar Search Engine Optimization</p>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-card">
+                    <span class="stat-label">Peringkat SEO</span>
+                    <span class="stat-value" id="user-rank">Pemula (Level 1)</span>
+                </div>
+                <div class="stat-card highlight">
+                    <span class="stat-label">Total Skor</span>
+                    <span class="stat-value" id="user-score">0 XP</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Estimasi Trafik</span>
+                    <span class="stat-value" id="user-traffic">0 /bulan</span>
+                </div>
+                <button id="btn-reset-game" class="btn btn-outline-danger" title="Mulai Ulang Game">
+                    <i class="fa-solid fa-rotate-right"></i> Reset
+                </button>
+            </div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-section">
+            <div class="progress-info">
+                <span>Kemajuan Belajar: <strong id="progress-percent">0%</strong></span>
+                <span id="completed-stages-text">0 dari 5 Tahap Selesai</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="overall-progress-bar" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-content">
+            <!-- Sidebar Navigation -->
+            <nav class="stage-nav">
+                <h3>Tahapan SEO</h3>
+                <ul class="nav-list">
+                    <li class="nav-item active" data-stage="1">
+                        <button class="nav-link">
+                            <span class="stage-number">1</span>
+                            <div class="nav-text">
+                                <span class="nav-title">Riset Kata Kunci</span>
+                                <span class="nav-subtitle">Keyword Research</span>
+                            </div>
+                            <i class="fa-solid fa-circle-check stage-status-icon" id="status-stage-1"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" data-stage="2">
+                        <button class="nav-link">
+                            <span class="stage-number">2</span>
+                            <div class="nav-text">
+                                <span class="nav-title">On-Page SEO</span>
+                                <span class="nav-subtitle">Optimasi Konten & Meta</span>
+                            </div>
+                            <i class="fa-solid fa-circle-check stage-status-icon" id="status-stage-2"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" data-stage="3">
+                        <button class="nav-link">
+                            <span class="stage-number">3</span>
+                            <div class="nav-text">
+                                <span class="nav-title">Technical SEO</span>
+                                <span class="nav-subtitle">Kecepatan & Struktur</span>
+                            </div>
+                            <i class="fa-solid fa-circle-check stage-status-icon" id="status-stage-3"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" data-stage="4">
+                        <button class="nav-link">
+                            <span class="stage-number">4</span>
+                            <div class="nav-text">
+                                <span class="nav-title">Off-Page SEO</span>
+                                <span class="nav-subtitle">Backlink & Otoritas</span>
+                            </div>
+                            <i class="fa-solid fa-circle-check stage-status-icon" id="status-stage-4"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" data-stage="5">
+                        <button class="nav-link">
+                            <span class="stage-number">5</span>
+                            <div class="nav-text">
+                                <span class="nav-title">Simulasi SERP</span>
+                                <span class="nav-subtitle">Peringkat Mesin Pencari</span>
+                            </div>
+                            <i class="fa-solid fa-circle-check stage-status-icon" id="status-stage-5"></i>
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="quick-tips-card">
+                    <h4><i class="fa-solid fa-lightbulb"></i> Tips SEO</h4>
+                    <p id="dynamic-tip">Pilih kata kunci dengan volume pencarian baik dan tingkat persaingan yang masuk akal!</p>
+                </div>
+            </nav>
+
+            <!-- Active Stage Container Area -->
+            <main class="stage-viewport">
+                <!-- Stage 1 Container: Riset Kata Kunci -->
+                <section id="stage-1" class="stage-panel active">
+                    <div class="stage-header">
+                        <h2><i class="fa-solid fa-magnifying-glass"></i> Tahap 1: Riset Kata Kunci (Keyword Research)</h2>
+                        <p class="stage-description">
+                            Riset kata kunci adalah proses menemukan frasa pencarian yang digunakan calon pengunjung di Google.
+                            Tugas Anda: Pilih 3 kata kunci terbaik untuk situs toko online <strong>"Kopi Lokal Nusantara"</strong> agar mendatangkan trafik potensial!
+                        </p>
+                    </div>
+
+                    <div class="keyword-research-grid">
+                        <div class="table-card">
+                            <table class="keyword-table">
+                                <thead>
+                                    <tr>
+                                        <th>Kata Kunci</th>
+                                        <th>Volume /Bulan</th>
+                                        <th>Kesulitan (KD)</th>
+                                        <th>Niat Pencari (Intent)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="keyword-list-body">
+                                    <!-- Rendered dynamically via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="selection-summary-card">
+                            <h3>Kata Kunci Terpilih (<span id="selected-kw-count">0</span>/3)</h3>
+                            <ul id="selected-keywords-list" class="selected-kw-tags">
+                                <li class="empty-msg">Belum ada kata kunci terpilih.</li>
+                            </ul>
+                            <div class="analysis-box" id="kw-analysis-result">
+                                Pilih 3 kata kunci di tabel untuk melihat analisis potensi trafik.
+                            </div>
+                            <button id="btn-submit-stage1" class="btn btn-primary btn-block" disabled>
+                                Evaluasi Pilihan Kata Kunci
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stage 2 Container: On-Page SEO -->
+                <section id="stage-2" class="stage-panel">
+                    <div class="stage-header">
+                        <h2><i class="fa-solid fa-file-code"></i> Tahap 2: Optimasi On-Page SEO</h2>
+                        <p class="stage-description">
+                            Optimasi On-Page dilakukan langsung pada halaman web agar mesin pencari dan manusia memahami isi konten.
+                            Tugas Anda: Perbaiki elemen HTML (Title Tag, Meta Description, URL Slug, Heading, Alt Gambar) berikut!
+                        </p>
+                    </div>
+
+                    <div class="onpage-editor-grid">
+                        <div class="editor-card">
+                            <h3>Form Form Optimasi Website</h3>
+                            <form id="onpage-form">
+                                <div class="form-group">
+                                    <label for="input-title">Title Tag (&lt;title&gt;) <small class="char-count" id="title-count">0/60 karakter</small></label>
+                                    <input type="text" id="input-title" class="form-control" placeholder="Contoh: Jual Kopi Nikmat Banget Murah">
+                                    <small class="form-hint">Ide: Masukkan kata kunci utama dan batas 50-60 karakter.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-meta">Meta Description <small class="char-count" id="meta-count">0/160 karakter</small></label>
+                                    <textarea id="input-meta" class="form-control" rows="3" placeholder="Deskripsi ringkas konten..."></textarea>
+                                    <small class="form-hint">Ide: Rangkum isi halaman dengan jelas & ajakan bertindak (120-160 karakter).</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-slug">URL Slug (Permalink)</label>
+                                    <input type="text" id="input-slug" class="form-control" placeholder="halaman-utama-1234">
+                                    <small class="form-hint">Ide: Singkat, menggunakan tanda hubung (-), dan relevan.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-h1">Tag H1 (Judul Utama Konten)</label>
+                                    <input type="text" id="input-h1" class="form-control" placeholder="Kopi Lokal">
+                                    <small class="form-hint">Gunakan hanya SATU tag H1 per halaman.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input-img-alt">Image Alt Text (Deskripsi Gambar Produk)</label>
+                                    <input type="text" id="input-img-alt" class="form-control" placeholder="IMG_2026_FINAL.jpg">
+                                    <small class="form-hint">Jelaskan isi gambar untuk pembaca layar & Google Image.</small>
+                                </div>
+
+                                <button type="button" id="btn-submit-stage2" class="btn btn-primary">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Simpan & Audit On-Page
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="preview-card">
+                            <h3><i class="fa-brands fa-google"></i> Pratinjau Hasil Google SERP</h3>
+                            <div class="serp-preview-box">
+                                <div class="serp-preview-url" id="preview-url">https://kopilokal.id/halaman-utama-1234</div>
+                                <div class="serp-preview-title" id="preview-title">Jual Kopi Nikmat Banget Murah</div>
+                                <div class="serp-preview-desc" id="preview-desc">Deskripsi ringkas konten...</div>
+                            </div>
+
+                            <div class="audit-feedback-box" id="onpage-audit-feedback">
+                                <h4><i class="fa-solid fa-list-check"></i> Checklist Optimasi</h4>
+                                <ul class="audit-checklist" id="onpage-checklist">
+                                    <!-- Rendered dynamically -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stage 3 Container: Technical SEO -->
+                <section id="stage-3" class="stage-panel">
+                    <div class="stage-header">
+                        <h2><i class="fa-solid fa-gears"></i> Tahap 3: Technical SEO & Performa Site</h2>
+                        <p class="stage-description">
+                            Technical SEO memastikan Google Spider dapat merayapi (crawling) dan mengindeks situs tanpa masalah teknis.
+                            Tugas Anda: Temukan dan perbaiki masalah teknis di dashboard berikut.
+                        </p>
+                    </div>
+
+                    <div class="technical-seo-grid">
+                        <div class="tech-issues-container" id="tech-issues-list">
+                            <!-- Rendered dynamically via JS -->
+                        </div>
+
+                        <div class="tech-stats-card">
+                            <h3>Status Kesehatan Situs (Health Score)</h3>
+                            <div class="health-meter">
+                                <div class="health-score-val" id="health-score-text">50%</div>
+                                <div class="meter-bg">
+                                    <div class="meter-fill" id="health-score-bar" style="width: 50%;"></div>
+                                </div>
+                            </div>
+                            <div class="tech-summary">
+                                <p><i class="fa-solid fa-bolt text-warning"></i> Kecepatan Load: <strong id="speed-stat">3.8 detik</strong></p>
+                                <p><i class="fa-solid fa-shield-halved text-danger"></i> Keamanan SSL: <strong id="ssl-stat">Belum Terpasang (HTTP)</strong></p>
+                                <p><i class="fa-solid fa-sitemap text-info"></i> Sitemap XML: <strong id="sitemap-stat">Tidak Ditemukan</strong></p>
+                            </div>
+                            <button id="btn-submit-stage3" class="btn btn-primary btn-block">
+                                Jalankan Full Technical Audit
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stage 4 Container: Off-Page SEO -->
+                <section id="stage-4" class="stage-panel">
+                    <div class="stage-header">
+                        <h2><i class="fa-solid fa-link"></i> Tahap 4: Off-Page SEO & Evaluasi Backlink</h2>
+                        <p class="stage-description">
+                            Backlink adalah tautan dari web lain ke web Anda (seperti 'surat rekomendasi'). Namun, backlink berkualitas buruk/spam justru merusak reputasi situs!
+                            Tugas Anda: Terima tawaran backlink berkualitas tingi (High Authority) dan tolak tawaran link spam/berbahaya.
+                        </p>
+                    </div>
+
+                    <div class="offpage-grid">
+                        <div class="backlink-requests-card">
+                            <h3>Tawaran Kerjasama Backlink Masuk</h3>
+                            <div id="backlink-cards-container">
+                                <!-- Rendered dynamically -->
+                            </div>
+                        </div>
+
+                        <div class="domain-authority-card">
+                            <h3>Profil Otoritas Situs (Domain Authority)</h3>
+                            <div class="da-badge-box">
+                                <div class="da-score" id="da-score-val">DA 15</div>
+                                <span>Domain Authority saat ini</span>
+                            </div>
+                            <div class="link-stats">
+                                <div class="l-stat">
+                                    <span class="l-val text-success" id="good-backlinks-count">0</span>
+                                    <span class="l-lbl">Backlink Berkualitas</span>
+                                </div>
+                                <div class="l-stat">
+                                    <span class="l-val text-danger" id="spam-backlinks-count">0</span>
+                                    <span class="l-lbl">Link Spam Diterima</span>
+                                </div>
+                            </div>
+                            <button id="btn-submit-stage4" class="btn btn-primary btn-block" disabled>
+                                Selesaikan Tahap Off-Page
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stage 5 Container: SERP Simulation -->
+                <section id="stage-5" class="stage-panel">
+                    <div class="stage-header">
+                        <h2><i class="fa-solid fa-chart-line"></i> Tahap 5: Simulasi Peringkat Google SERP</h2>
+                        <p class="stage-description">
+                            Lihat hasil akhir dari seluruh optimasi SEO yang telah Anda lakukan di Tahap 1 sampai 4!
+                            Klik tombol simulasi di bawah untuk menjalankan algoritma pencarian Google.
+                        </p>
+                    </div>
+
+                    <div class="serp-sim-grid">
+                        <div class="sim-controls-card">
+                            <button id="btn-run-simulation" class="btn btn-success btn-lg">
+                                <i class="fa-solid fa-play"></i> Jalankan Simulasi Peringkat Google
+                            </button>
+
+                            <div class="score-breakdown">
+                                <h4>Skor Akhir Optimasi</h4>
+                                <div class="breakdown-item">
+                                    <span>Riset Kata Kunci</span>
+                                    <span id="score-kw">0 XP</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>On-Page SEO</span>
+                                    <span id="score-onpage">0 XP</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Technical SEO</span>
+                                    <span id="score-tech">0 XP</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Off-Page SEO</span>
+                                    <span id="score-offpage">0 XP</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="serp-results-card">
+                            <h3>Hasil Pencarian Google (Simulasi Live)</h3>
+                            <div class="serp-search-bar">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <span id="serp-query-text">"kopi lokal indonesia terbaik"</span>
+                            </div>
+
+                            <div id="serp-rankings-list" class="serp-rankings-list">
+                                <div class="sim-placeholder">
+                                    <i class="fa-solid fa-chart-column fa-3x"></i>
+                                    <p>Klik "Jalankan Simulasi Peringkat" untuk melihat posisi situs Anda di Google!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Game Edukasi SEO (SEO Master). Dikembangkan untuk pembelajaran SEO interaktif.</p>
+        </footer>
+    </div>
+
+    <!-- Feedback / Modal Notification -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header" id="modal-header">
+                <i class="fa-solid fa-award modal-icon" id="modal-icon"></i>
+                <h3 id="modal-title">Judul Modal</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+                Pesan modal...
+            </div>
+            <div class="modal-footer">
+                <button id="btn-modal-close" class="btn btn-primary">Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JS -->
+    <script src="js/app.js"></script>
+</body>
+</html>
