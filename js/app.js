@@ -395,9 +395,10 @@ function renderKeywordTable() {
 
     tbody.innerHTML = '';
     const fragment = document.createDocumentFragment();
+    const selectedSet = new Set(gameState.selectedKeywords);
 
     KEYWORDS_DATA.forEach(kw => {
-        const isSelected = gameState.selectedKeywords.includes(kw.id);
+        const isSelected = selectedSet.has(kw.id);
         const tr = document.createElement('tr');
 
         tr.innerHTML = `
@@ -792,9 +793,10 @@ function renderBacklinkCards() {
 
     container.innerHTML = '';
     const fragment = document.createDocumentFragment();
+    const evaluatedSet = new Set(gameState.backlinkDecisions.evaluatedIds);
 
     BACKLINK_REQUESTS.forEach(req => {
-        const isEvaluated = gameState.backlinkDecisions.evaluatedIds.includes(req.id);
+        const isEvaluated = evaluatedSet.has(req.id);
         const card = document.createElement('div');
         card.className = 'backlink-card';
 
@@ -878,12 +880,13 @@ function updateOffPageStatsUI() {
 
 function evaluateStage4() {
     let score = 0;
+    const evaluatedSet = new Set(gameState.backlinkDecisions.evaluatedIds);
     BACKLINK_REQUESTS.forEach(req => {
-        const isEvaluated = gameState.backlinkDecisions.evaluatedIds.includes(req.id);
+        const isEvaluated = evaluatedSet.has(req.id);
         if (isEvaluated) {
             if (req.isGood && gameState.backlinkDecisions.goodAccepted > 0) {
                 score += 25;
-            } else if (!req.isGood && !gameState.backlinkDecisions.evaluatedIds.includes(req.id)) {
+            } else if (!req.isGood && !evaluatedSet.has(req.id)) {
                 score += 25;
             }
         }

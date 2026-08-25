@@ -134,3 +134,15 @@ test('evaluateStage1 - updates modal DOM elements with evaluation results', () =
     assert.match(bodyElem.innerHTML, /jual kopi online gratis ongkir/);
     assert.match(bodyElem.innerHTML, /resep membuat kopi enak di rumah/);
 });
+
+test('loadGameState - handles JSON parse failure gracefully in catch block', () => {
+    global.localStorage.setItem('seo_game_state_v1', '{invalid-json');
+
+    // Should catch JSON parsing error without throwing
+    assert.doesNotThrow(() => {
+        app.loadGameState();
+    });
+
+    // gameState currentStage should remain default (1)
+    assert.equal(app.gameState.currentStage, 1);
+});
